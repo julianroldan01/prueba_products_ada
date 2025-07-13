@@ -1,0 +1,49 @@
+
+Explicación de la Prueba - API REST con Spring Boot y MySQL
+===========================================================
+
+Este proyecto consiste en una aplicación Spring Boot que expone una API REST para gestionar productos.
+Se implementó con una arquitectura limpia que incluye DTOs, validación, controladores, servicios, repositorios y pruebas.
+
+1. Funcionalidad Principal:
+---------------------------
+- La aplicación permite crear productos y consultarlos por ID.
+- Cada producto tiene los campos: id, nombre, descripción y precio.
+
+2. Validaciones:
+----------------
+- El campo "nombre" no puede estar vacío.
+- El campo "precio" es obligatorio y debe ser un valor positivo.
+- Si alguna validación falla, se responde con un código HTTP 400 y el detalle del error.
+
+3. Manejo de Errores:
+---------------------
+- Se implementó una clase GlobalExceptionHandler con @RestControllerAdvice que captura excepciones de validación.
+- Devuelve un JSON con los campos inválidos y sus respectivos mensajes.
+
+4. Pruebas Unitarias:
+---------------------
+- Se crearon pruebas para la clase ProductService usando JUnit y Mockito.
+- Se probaron escenarios de éxito (guardar y consultar un producto) y de error (producto no encontrado).
+
+5. Entorno con Docker:
+----------------------
+- Se usó un archivo `docker-compose.yml` para levantar dos servicios:
+    - `mysql-db`: base de datos MySQL.
+    - `spring-app`: aplicación Spring Boot construida desde el JAR generado con `mvn clean package`.
+- Se configuró el acceso a la base de datos usando variables de entorno.
+- El JAR se copió en la imagen con un `Dockerfile` usando OpenJDK 17.
+
+6. Conexión a la Base de Datos:
+-------------------------------
+- La conexión se realiza usando la URL: jdbc:mysql://mysql-db:3306/productsdb
+- Las credenciales son proporcionadas mediante variables de entorno definidas en docker-compose.yml.
+
+7. Archivos Clave:
+------------------
+- `ProductController`: define los endpoints POST /products y GET /products/{id}
+- `ProductDTO`: contiene las validaciones de los campos del producto.
+- `ProductService` y `ProductServiceImpl`: contienen la lógica de negocio.
+- `GlobalExceptionHandler`: captura y maneja errores de validación.
+- `Dockerfile` y `docker-compose.yml`: permiten ejecutar la app con base de datos MySQL.
+
